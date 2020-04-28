@@ -57,21 +57,14 @@ function createEvent(eventDetails) {
   var descriptionTXT = eventDetails[5].replace(/[\n\r]\s*[\n\r]/g, '\n');
   var url = eventDetails[6];
   var ruleSet = eventDetails[7];
+  var host = eventDetails[8];
   var startdateTime = new Date(millis * 1);
   eventDetails[1] = startdateTime;
-  var minsHours = timeLimit.split(' ')[1];
-  var timeAmount = timeLimit.split(' ')[0];
-  var end = (millis / 1000);
-  if (minsHours == 'Minutes') {
-    end = end + (timeAmount * 60);
-  }
-  if (minsHours == 'Hours') {
-    end = end + (timeAmount * 3600);
-  }
-  var endDateTime = new Date(end * 1000);
-  eventDetails.splice(2, 1);
-  eventDetails.splice(3, 1);
-  eventDetails.splice(2, 0,endDateTime);
+  var timeAmount = getMilliSeconds(timeLimit);
+  var end = (millis * 1) + timeAmount;
+  var endDateTime = new Date(end);
+  eventDetails.splice(4, 1);
+  eventDetails.splice(3, 0,endDateTime);
   var options = {location: location, description: descriptionhtml, sendInvites: false};
   try {
     var cal = CalendarApp.getCalendarById(CALENDARID);
@@ -84,7 +77,7 @@ function createEvent(eventDetails) {
       var lastRow = sheet.getLastRow();
       range = sheet.getRange(lastRow + 1, 1, 1, eventDetails.length);
     } else {
-      var headings = ['Title','Start','End','Location','Description','URL','Ruleset']; 
+      var headings = ['Title','Start','RoundTime','End','Location','Description','URL','Ruleset','Host']; 
       sheet.appendRow(headings);
       range = sheet.getRange(2, 1, 1, eventDetails.length);
     }
@@ -94,4 +87,29 @@ function createEvent(eventDetails) {
     Logger.log(e);
     return 'failed';
   }
+}
+
+function getMilliSeconds(str) {
+  var minutes = 0,hours = 0,days = 0,totalSeconds = 0;
+  str = str.toLowerCase().replace('minutes','minute')
+                         .replace('hours','hour')
+                         .replace('days','day');
+  var array = str.split(' ');
+  if (array.indexOf('minute') > -1) {
+    var mIDX = array.indexOf('minute') - 1;
+    minutes = array[mIDX];
+    totalSeconds = minutes * 60;
+  }
+  if (array.indexOf('hour') > -1) {
+    var mIDX = array.indexOf('hour') - 1;
+    hours = array[mIDX];
+    totalSeconds = totalSeconds + (hours * 3600);
+  }
+  if (array.indexOf('day') > -1) {
+    var mIDX = array.indexOf('day') - 1;
+    days = array[mIDX];
+    totalSeconds = totalSeconds + (days * 86400);
+  }
+  var milliseconds = totalSeconds * 1000;
+  return milliseconds;
 }

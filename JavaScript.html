@@ -92,7 +92,9 @@ function createEventfromPage() {
   for (i = 0; i < ps.length; i++) {
     descriptionHTML = descriptionHTML + ps[i].innerHTML + "<br>";
   }
-  var eventDetails = [title,millis,timeLimit,location,descriptionHTML,descriptionTXT,url,ruleSet];
+  var host = document.getElementsByTagName("p")[3].innerText
+  host = host.split(': ')[1];
+  var eventDetails = [title,millis,timeLimit,location,descriptionHTML,descriptionTXT,url,ruleSet,host];
   alert('Creating calendar event');
   google.script.run.withSuccessHandler(eventCreated)
     .createEvent(eventDetails);
