@@ -11,8 +11,8 @@ To se this up, create a new Google Apps Script in Google Drive:
 
 Copy the code from Code.gs into the first file that's open.
 Change the constants at the top of the code to be your specific IDs
-`const SPREADSHEETID = "Insert your spreadsheet ID here";`
-`const CALENDARID = "Insert your calendar ID here";`
+```const SPREADSHEETID = "Insert your spreadsheet ID here";```
+```const CALENDARID = "Insert your calendar ID here";```
 
 - The spreadsheet must have a sheet called Sheet1 and be editable by all who are going to run this webapp
 - If no headers exist in Sheet1 they will be created on first execution of the webapp
