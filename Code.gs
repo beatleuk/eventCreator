@@ -1,5 +1,5 @@
-const SPREADSHEETID = "Insert your spreadsheet ID here";
-const CALENDARID = "Insert your calendar ID here";
+const SPREADSHEETID = "11oB8554IocLxT16y9d-BhhiGa-PWSsZrongbEUFIJk4";
+const CALENDARID = "ddkrihb0u1vghfos6ph9nqs79g@group.calendar.google.com";
 
 function doGet(request) {
   return HtmlService.createTemplateFromFile('Index')
@@ -11,13 +11,14 @@ function include(filename) {
       .getContent();
 }
 
-function isValidURL(url){ 
-  var RegExp = /^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?$/; 
-  if(RegExp.test(url)){ 
-    return true; 
-  }else{ 
-    return false; 
-  } 
+function isValidURL(url){
+  if (url.indexOf("https://silph.gg") > -1) {
+    var RegExp = /^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?$/;
+    if(RegExp.test(url)){
+      return true;
+    }
+  }
+  return false;
 }
 
 function getsilphPage(url) {
