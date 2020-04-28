@@ -78,9 +78,16 @@ function createEvent(eventDetails) {
     var event = cal.createEvent(title, startdateTime, endDateTime, options)
     .setGuestsCanSeeGuests(false);
     var ss = SpreadsheetApp.openById(SPREADSHEETID);
-    var sheet = ss.getSheetByName('events');
-    var lastRow = sheet.getLastRow();
-    var range = sheet.getRange(lastRow + 1, 1, 1, eventDetails.length);
+    var sheet = ss.getSheetByName('Sheet1');
+    var range = '';
+    if (sheet.getLastRow()) {
+      var lastRow = sheet.getLastRow();
+      range = sheet.getRange(lastRow + 1, 1, 1, eventDetails.length);
+    } else {
+      var headings = ['Title','Start','End','Location','Description','URL','Ruleset']; 
+      sheet.appendRow(headings);
+      range = sheet.getRange(2, 1, 1, eventDetails.length);
+    }
     range.setValues([eventDetails]);
     return cal.getName();
   } catch(e) {
