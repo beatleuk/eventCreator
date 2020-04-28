@@ -1,0 +1,106 @@
+<script>
+window.addEventListener('load', function() {
+  console.log('Page is loaded');
+});
+
+function checkUrl() {
+  var inURL = document.getElementById("silphURL").value;
+  google.script.run.withSuccessHandler(getPageData)
+      .isValidURL(inURL);
+}
+
+function getPageData(validURL) {
+  var messageDiv = document.getElementById("message")
+  messageDiv.innerHTML = "";
+  document.getElementById("eventDIV").innerHTML = "";
+  document.getElementById("confDIV").style.display = "none";
+  if (validURL == true) {
+    var inURL = document.getElementById("silphURL").value;
+    google.script.run.withSuccessHandler(showEvent)
+      .getsilphPage(inURL);
+  } else {
+    messageDiv.innerHTML = "that is not a valid URL";
+  }
+}
+
+function showEvent(eventHTML) {
+  var eventDIV =  document.getElementById("eventDIV");
+  eventDIV.innerHTML = "";
+  eventDIV.insertAdjacentHTML('afterbegin', eventHTML);
+  var descrDiv = document.getElementById("descrpDIV");
+  descrDiv.insertAdjacentHTML('beforebegin','<p id="dp">Description</p>');
+  var warnPanel = document.getElementsByClassName("panel panel-dark")[0];
+  if (warnPanel) {
+    warnPanel.parentNode.removeChild(warnPanel);
+  }
+  var confirmDIV = document.getElementById("confDIV");
+  var heading4 = document.getElementsByTagName("h4")[0];
+  var trimmedh4 = heading4.innerHTML.trim().split(":")[0] + ": ~";
+  heading4.innerHTML = trimmedh4;
+  var heading2 = document.getElementsByTagName("h2")[0];
+  heading2.innerHTML = heading2.innerHTML.trim();
+  var dateTime = document.getElementsByClassName('utcTime')[0];
+  dateTime.setAttribute("id", "dateTime");
+  var milliseconds = dateTime.innerHTML * 1000;
+  var dateObject = new Date(milliseconds);
+  var humanDateFormat = dateObject.toLocaleString('en-GB', { timeZone: 'Europe/London' });
+  dateTime.innerHTML = humanDateFormat;
+  var text = document.createElement('TEXT');
+  text.innerHTML = milliseconds;
+  text.setAttribute("id", 'millis');
+  text.style.color = "white";
+  dateTime.appendChild(text);
+  if (document.images[0]) {
+    var x = document.images[0];
+    x.parentNode.removeChild(x);
+  }
+  var detailsLabels = document.getElementsByClassName('detailsLabel');
+  for (var d = 0; d < detailsLabels.length; d++) {
+    var p = detailsLabels[d].parentNode;
+    p.nextSibling.remove();
+    if (d == 4) {
+      p.parentNode.removeChild(p);
+    }
+  }
+  var seconds = document.getElementsByClassName('secondary');
+  for (i = 0; i < seconds.length; i++) {
+    seconds[i].removeAttribute("href");
+  }
+  confirmDIV.style.display = "block";
+}
+
+function createEventfromPage() {
+  var millis = document.getElementById("millis").innerHTML;
+  var title = document.getElementsByTagName("h2")[0].innerHTML;
+  var where = document.getElementsByTagName("p")[2].innerText;
+  var location = where.split(': ')[1];
+  var url = document.getElementById("silphURL").value;
+  var ruleP = document.getElementsByTagName("p")[4].innerText;
+  var ruleSet = ruleP.split(': ')[1];
+  var timeP = document.getElementById("timeLimit");
+  var timeLimit = '';
+  if (timeP){
+    timeLimit = timeP.innerText.split(': ')[1];
+  } else {
+    timeLimit = "30 Minutes";
+  }
+  var descDiv = document.getElementById("descrpDIV");
+  var descriptionTXT = descDiv.innerText;
+  var ps  = descDiv.getElementsByTagName("p");
+  var descriptionHTML = "";
+  var i;
+  for (i = 0; i < ps.length; i++) {
+    descriptionHTML = descriptionHTML + ps[i].innerHTML + "<br>";
+  }
+  var eventDetails = [title,millis,timeLimit,location,descriptionHTML,descriptionTXT,url,ruleSet];
+  alert('Creating calendar event');
+  google.script.run.withSuccessHandler(eventCreated)
+    .createEvent(eventDetails);
+}
+
+function eventCreated(calName) {
+  document.getElementById("message").innerHTML = "Calendar event created with in " + calName;
+  document.getElementById("eventDIV").innerHTML = "";
+  document.getElementById("confDIV").style.display = "none";
+}
+</script>

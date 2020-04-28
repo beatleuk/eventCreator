@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Stylesheet'); ?>
+  </head>
+  <body>
+    <h1>silph.gg Event creator</h1>
+    <p>Please enter the silph.gg tournament url in the text box below.</p>
+    <input type="url" id="silphURL" size="50">
+    <button id="submitBtn" onclick="checkUrl()">Submit</button>
+    <div id="message"></div>
+    <div id="eventDIV"></div>
+    <div id="confDIV" style="display:none;">
+      <p class="conftext">Click Submit below to create a calendar event from these details"</p>
+      <button id="confBtn" onclick="createEventfromPage()">Submit</button>
+    </div>
+    <?!= include('JavaScript'); ?>
+  </body>
+</html>
