@@ -21,6 +21,8 @@ Copy and paste the code from the corresponding files here.
 
 Save all 4 files and name the prject something meaningful
 
+Enable the Calendar API and Google Sheets API by going to **Resources** -> **Advanced Google ervices** and enable each API on the right
+
 Now publish the webapp **Publish** -> **Deploy** as web app and fill in the form
 ![](/images/image3.png)
 
