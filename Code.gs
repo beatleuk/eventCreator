@@ -1,5 +1,5 @@
-const SPREADSHEETID = "11oB8554IocLxT16y9d-BhhiGa-PWSsZrongbEUFIJk4";
-const CALENDARID = "ddkrihb0u1vghfos6ph9nqs79g@group.calendar.google.com";
+const SPREADSHEETID = "Insert your spreadsheet ID here";
+const CALENDARID = "Insert your calendar ID here";
 
 function doGet(request) {
   return HtmlService.createTemplateFromFile('Index')
