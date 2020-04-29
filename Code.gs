@@ -110,6 +110,6 @@ function getMilliSeconds(str) {
     days = array[mIDX];
     totalSeconds = totalSeconds + (days * 86400);
   }
-  var milliseconds = totalSeconds * 1000;
+  var milliseconds = (totalSeconds * 4) * 1000;
   return milliseconds;
 }
